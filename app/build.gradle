@@ -31,8 +31,6 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    // This library handles Spotify web api
-    compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
