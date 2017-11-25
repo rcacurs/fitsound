@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements
 
     private int current_SPM = 0;
 
-    private String playlist_70_90 = 
+//    private String playlist_70_90 =
 
     TextView songTitleLable;
     TextView songAlbumLable;
