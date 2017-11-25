@@ -37,13 +37,16 @@ public class MainActivity extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Player.OperationCallback
 {
     // TODO: Replace with your client ID
+
     private static final String CLIENT_ID = "ab3cf19326c44d15be7e8c80d351f849";
     private static final String TAG="FitSound";
     public static final String URI_CONNECTEDDEVICES = "suunto://MDS/ConnectedDevices";
     public static final String URI_EVENTLISTENER = "suunto://MDS/EventListener";
     public static final String SCHEME_PREFIX = "suunto://";
+    long previousTimetamp = 0;
+    long currentTimestamp = 0;
     // Sensor subscription
-    static private String URI_SERVICE = "/Sample/JumpCounter/JumpCount";//"/Meas/Acc/26";//"/Meas/IMU/13";//"/Meas/Acc/13";
+    static private String URI_SERVICE = "/Sample/JumpCounter/JumpCount";//"/Sample/EdiJunction";//"/Meas/Acc/26";//"/Meas/IMU/13";//"/Meas/Acc/13";
     static private String URI_SERVICE2 = "/Meas/IMU6/26";
     String connectedSensorSerial;
     // TODO: Replace with your redirect URI
@@ -94,8 +97,8 @@ public class MainActivity extends Activity implements
         mMds = Mds.builder().build(this);
 
         mBleClient = RxBleClient.create(this);
-        RxBleDevice bleDevice = mBleClient.getBleDevice("80:1F:02:4E:F1:70");//"0C:8C:DC:21:47:1D");
-
+//        RxBleDevice bleDevice = mBleClient.getBleDevice("0C:8C:DC:21:47:1D");//"");
+        RxBleDevice bleDevice = mBleClient.getBleDevice("80:1F:02:4E:F1:70");
         mMds.connect(bleDevice.getMacAddress(), new MdsConnectionListener() {
 
             @Override
@@ -291,8 +294,17 @@ public class MainActivity extends Activity implements
                     @Override
                     public void onNotification(String data) {
                         Log.d(TAG, "Subscription data received: " + data);
-//                        AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
+                        BPMResponse bpmResponse = new Gson().fromJson(data, BPMResponse.class);
                         Log.d(TAG, "RECEIVED SUBSCRIPTION: "+data);
+
+                        if (bpmResponse != null ) {
+//
+                            Log.d(TAG, "RESPONSE TIMESTAMP "+bpmResponse.body.timestamp);
+                            currentTimestamp = bpmResponse.body.timestamp;
+                            double delta = (double)currentTimestamp - previousTimetamp;
+                            previousTimetamp = currentTimestamp;
+                            Log.d(TAG, "RESPONSE BPM "+ 1/(delta/60000));
+                        }
 //                        if (accResponse != null && accResponse.body.array.length > 0) {
 //
 //                            Log.d(TAG, "Acc: time - " + accResponse.body.timestamp + ", " + accResponse.body.array[0].x + ", " + accResponse.body.array[0].y + ", " + accResponse.body.array[0].z);
