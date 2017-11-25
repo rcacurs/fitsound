@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FitSound.iml" filepath="$PROJECT_DIR$/FitSound.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mdslib-1.6.0(1)-release/mdslib-1.6.0(1)-release.iml" filepath="$PROJECT_DIR$/mdslib-1.6.0(1)-release/mdslib-1.6.0(1)-release.iml" />
     </modules>
   </component>
 </project>

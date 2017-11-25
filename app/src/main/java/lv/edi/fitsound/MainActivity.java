@@ -8,6 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.movesense.mds.Mds;
+import com.movesense.mds.MdsConnectionListener;
+import com.movesense.mds.MdsException;
+import com.movesense.mds.MdsNotificationListener;
+import com.movesense.mds.MdsSubscription;
+import com.polidea.rxandroidble.RxBleClient;
+import com.polidea.rxandroidble.RxBleDevice;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -23,12 +31,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Vector;
 
+
 public class MainActivity extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Player.OperationCallback
 {
     // TODO: Replace with your client ID
     private static final String CLIENT_ID = "ab3cf19326c44d15be7e8c80d351f849";
     private static final String TAG="FitSound";
+    public static final String URI_CONNECTEDDEVICES = "suunto://MDS/ConnectedDevices";
+    public static final String URI_EVENTLISTENER = "suunto://MDS/EventListener";
+    public static final String SCHEME_PREFIX = "suunto://";
+    // Sensor subscription
+    static private String URI_SERVICE = "/Sample/JumpCounter/JumpCount";//"/Meas/Acc/26";//"/Meas/IMU/13";//"/Meas/Acc/13";
+    static private String URI_SERVICE2 = "/Meas/IMU6/26";
+    String connectedSensorSerial;
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "yourcustomprotocol://callback";
 
@@ -39,6 +55,13 @@ public class MainActivity extends Activity implements
     TextView songTitleLable;
     TextView songAlbumLable;
     TextView songArtistLable;
+    // BleClient singleton
+    static private RxBleClient mBleClient;
+    private Mds mMds;
+    RxBleDevice bleDevice;
+
+    private MdsSubscription mdsSubscription;
+    private MdsSubscription mdsSubscription2;
     ImageView albumArt;
 
     Vector<String> songTitles = new Vector();
@@ -59,6 +82,52 @@ public class MainActivity extends Activity implements
         songArtistLable = (TextView)findViewById(R.id.artist_label);
         songAlbumLable = (TextView)findViewById(R.id.album_label);
         albumArt = (ImageView)findViewById(R.id.album_art);
+
+        // ble
+
+        mMds = Mds.builder().build(this);
+
+        mBleClient = RxBleClient.create(this);
+        RxBleDevice bleDevice = mBleClient.getBleDevice("80:1F:02:4E:F1:70");//"0C:8C:DC:21:47:1D");
+
+        mMds.connect(bleDevice.getMacAddress(), new MdsConnectionListener() {
+
+            @Override
+            public void onConnect(String s) {
+                Log.d(TAG, "Connecting:" + s);
+            }
+
+            @Override
+            public void onConnectionComplete(String macAddress, String serial) {
+                Log.d(TAG, "CONNETED! serial - "+serial);
+                connectedSensorSerial = serial;
+                subscribeToSensor(connectedSensorSerial);
+
+//                for (MyScanResult sr : mScanResArrayList) {
+//                    if (sr.macAddress.equalsIgnoreCase(macAddress)) {
+//                        sr.markConnected(serial);
+//                        break;
+//                    }
+//                }
+//                mScanResArrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(MdsException e) {
+                Log.e(TAG, "Error connecting:" + e);
+
+            }
+
+            @Override
+            public void onDisconnect(String bleAddress) {
+                Log.d(TAG, "DEVICE DISCONNECTED: " + bleAddress);
+//                for (MyScanResult sr : mScanResArrayList) {
+//                    if (bleAddress.equals(sr.macAddress))
+//                        sr.markDisconnected();
+//                }
+//                mScanResArrayAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -185,6 +254,85 @@ public class MainActivity extends Activity implements
     @Override
     public void onSuccess(){
 
+    }
+
+    private void subscribeToSensor(String connectedSerial) {
+        // Clean up existing subscription (if there is one)
+        if (mdsSubscription != null) {
+//            unsubscribe();
+        }
+
+        // Build JSON doc that describes what resource and device to subscribe
+        // Here we subscribe to 13 hertz accelerometer data
+        StringBuilder sb = new StringBuilder();
+        String strContract = sb.append("{\"Uri\": \"").append(connectedSerial).append(URI_SERVICE).append("\"}").toString();
+        Log.d(TAG, strContract);
+
+
+        mdsSubscription = mMds.builder().build(this).subscribe(URI_EVENTLISTENER,
+                strContract, new MdsNotificationListener() {
+                    @Override
+                    public void onNotification(String data) {
+                        Log.d(TAG, "Subscription data received: " + data);
+//                        AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
+                        Log.d(TAG, "RECEIVED SUBSCRIPTION: "+data);
+//                        if (accResponse != null && accResponse.body.array.length > 0) {
+//
+//                            Log.d(TAG, "Acc: time - " + accResponse.body.timestamp + ", " + accResponse.body.array[0].x + ", " + accResponse.body.array[0].y + ", " + accResponse.body.array[0].z);
+//                        }
+//                        // If UI not enabled, do it now
+//                        if (sensorUI.getVisibility() == View.GONE)
+//                            sensorUI.setVisibility(View.VISIBLE);
+//
+//                        AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
+//                        if (accResponse != null && accResponse.body.array.length > 0) {
+//
+//                            String accStr =
+//                                    String.format("%.02f, %.02f, %.02f", accResponse.body.array[0].x, accResponse.body.array[0].y, accResponse.body.array[0].z);
+//
+//                            ((TextView)findViewById(R.id.sensorMsg)).setText(accStr);
+//                        }
+                    }
+
+                    @Override
+                    public void onError(MdsException error) {
+                        Log.e(TAG, "subscription onError(): ", error);
+//                        unsubscribe();
+                    }
+                });
+        sb = new StringBuilder();
+        strContract = sb.append("{\"Uri\": \"").append(connectedSerial).append(URI_SERVICE2).append("\"}").toString();
+//        mdsSubscription2 = mMds.builder().build(this).subscribe(URI_EVENTLISTENER,
+//                strContract, new MdsNotificationListener() {
+//                    @Override
+//                    public void onNotification(String data) {
+//                        Log.d(TAG, "Subscription data received: " + data);
+//                        Imu6DataResponse accResponse = new Gson().fromJson(data, Imu6DataResponse.class);
+//                        Log.d(TAG, "RECEIVED SUBSCRIPTION 2");
+////                        if (accResponse != null && accResponse.body.array.length > 0) {
+////
+//////                            Log.d(TAG, "Acc: time - " + accResponse.body.timestamp + ", " + accResponse.body.array[0].x + ", " + accResponse.body.array[0].y + ", " + accResponse.body.array[0].z);
+////                        }
+////                        // If UI not enabled, do it now
+////                        if (sensorUI.getVisibility() == View.GONE)
+////                            sensorUI.setVisibility(View.VISIBLE);
+////
+////                        AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
+////                        if (accResponse != null && accResponse.body.array.length > 0) {
+////
+////                            String accStr =
+////                                    String.format("%.02f, %.02f, %.02f", accResponse.body.array[0].x, accResponse.body.array[0].y, accResponse.body.array[0].z);
+////
+////                            ((TextView)findViewById(R.id.sensorMsg)).setText(accStr);
+////                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(MdsException error) {
+//                        Log.e(TAG, "subscription onError(): ", error);
+////                        unsubscribe();
+//                    }
+//                });
     }
 
 }
