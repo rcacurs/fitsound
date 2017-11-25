@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FitSound.iml" filepath="$PROJECT_DIR$/FitSound.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/libs/spotify-web-api-android/spotify-api/build/outputs/aar/app_libs_spotify-web-api-android_spotify-api_build_outputs_aar.iml" filepath="$PROJECT_DIR$/app/libs/spotify-web-api-android/spotify-api/build/outputs/aar/app_libs_spotify-web-api-android_spotify-api_build_outputs_aar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/spotify-web-api-android/spotify-api/build/outputs/aar/app_libs_spotify-web-api-android_spotify-api_build_outputs_aar.iml" filepath="$PROJECT_DIR$/app/libs/spotify-web-api-android/spotify-api/build/outputs/aar/app_libs_spotify-web-api-android_spotify-api_build_outputs_aar.iml" />
       <module fileurl="file://$PROJECT_DIR$/fitsound.iml" filepath="$PROJECT_DIR$/fitsound.iml" />
       <module fileurl="file://$PROJECT_DIR$/mdslib-1.6.0(1)-release/mdslib-1.6.0(1)-release.iml" filepath="$PROJECT_DIR$/mdslib-1.6.0(1)-release/mdslib-1.6.0(1)-release.iml" />
+      <module fileurl="file://D:\owncloud\Projects\Junction-2017\fitsound\mdslib-1.6.0(1)-release\mdslib-1.6.0(1)-release.iml" filepath="D:\owncloud\Projects\Junction-2017\fitsound\mdslib-1.6.0(1)-release\mdslib-1.6.0(1)-release.iml" />
     </modules>
   </component>
 </project>
