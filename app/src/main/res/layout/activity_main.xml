@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="lv.edi.fitsound.MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#404040">
+
 
     <LinearLayout
         android:layout_height="wrap_content"
@@ -15,13 +17,19 @@
             android:text="Song Title"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"/>
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"
+            android:textSize="18dp"/>
         <TextView
             android:text="Test"
             android:id="@+id/track_label"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_width="0dp"/>
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"
+            android:textSize="18dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_height="wrap_content"
@@ -31,13 +39,17 @@
             android:text="Artist"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"/>
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"/>
         <TextView
             android:text="Artist Test"
             android:id="@+id/artist_label"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_width="0dp"/>
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_height="wrap_content"
@@ -47,20 +59,25 @@
             android:text="Album"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_width="0dp"/>
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"/>
         <TextView
             android:text="Album Test"
             android:id="@+id/album_label"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_width="0dp"/>
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:textColor="#ffffff"
+            android:padding="5dp"/>
     </LinearLayout>
 
     <ImageView
         android:layout_weight="1"
         android:id="@+id/album_art"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,25 +88,29 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="&gt;"
-            android:onClick="onClickPlay"/>
+            android:onClick="onClickPlay"
+            android:background="#b0aeae"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="||"
-            android:onClick="onClickPause"/>
+            android:onClick="onClickPause"
+            android:background="#b0aeae"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="&lt;&lt;"
-            android:onClick="onClickPrevious"/>
+            android:onClick="onClickPrevious"
+            android:background="#b0aeae"/>
         <Button
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="&gt;&gt;"
-            android:onClick="onClickNext"/>
+            android:onClick="onClickNext"
+            android:background="#b0aeae"/>
     </LinearLayout>
 
 </LinearLayout>
