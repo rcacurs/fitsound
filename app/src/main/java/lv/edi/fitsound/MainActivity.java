@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -15,19 +18,31 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
+import com.spotify.sdk.android.player.Metadata;
+import com.squareup.picasso.Picasso;
+
+import java.util.Vector;
 
 public class MainActivity extends Activity implements
-        SpotifyPlayer.NotificationCallback, ConnectionStateCallback
+        SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Player.OperationCallback
 {
     // TODO: Replace with your client ID
     private static final String CLIENT_ID = "ab3cf19326c44d15be7e8c80d351f849";
-
+    private static final String TAG="FitSound";
     // TODO: Replace with your redirect URI
     private static final String REDIRECT_URI = "yourcustomprotocol://callback";
 
     private Player mPlayer;
 
     private static final int REQUEST_CODE = 1337;
+
+    TextView songTitleLable;
+    TextView songAlbumLable;
+    TextView songArtistLable;
+    ImageView albumArt;
+
+    Vector<String> songTitles = new Vector();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +55,10 @@ public class MainActivity extends Activity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        songTitleLable = (TextView)findViewById(R.id.track_label);
+        songArtistLable = (TextView)findViewById(R.id.artist_label);
+        songAlbumLable = (TextView)findViewById(R.id.album_label);
+        albumArt = (ImageView)findViewById(R.id.album_art);
     }
 
     @Override
@@ -79,6 +98,14 @@ public class MainActivity extends Activity implements
         Log.d("MainActivity", "Playback event received: " + playerEvent.name());
         switch (playerEvent) {
             // Handle event type as necessary
+            case kSpPlaybackNotifyMetadataChanged:
+                Metadata.Track track = mPlayer.getMetadata().currentTrack;
+                Log.d(TAG, track.toString());
+                songTitleLable.setText(track.name);
+                songArtistLable.setText(track.artistName);
+                songAlbumLable.setText(track.albumName);
+
+                Picasso.with(this).load(track.albumCoverWebUrl).into(albumArt);
             default:
                 break;
         }
@@ -99,7 +126,14 @@ public class MainActivity extends Activity implements
         Log.d("MainActivity", "User logged in");
 
         // This is the line that plays a song.
-        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+//        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+//        mPlayer.playUri(null, "spotify:track:29zkoUsOE50f0I3n44LjjU", 0, 0);
+        mPlayer.playUri(null, "spotify:user:spotify:playlist:37i9dQZEVXcTmxDvQtsYYP", 0, 0);
+        mPlayer.pause(null);
+//        mPlayer.queue(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V");
+//        mPlayer.queue(null, "spotify:track:29zkoUsOE50f0I3n44LjjU");
+//
+
     }
 
     @Override
@@ -121,4 +155,36 @@ public class MainActivity extends Activity implements
     public void onConnectionMessage(String message) {
         Log.d("MainActivity", "Received connection message: " + message);
     }
+
+    public void onClickPlay(View v){
+        Log.d(TAG, "PRESSED PLAY");
+        mPlayer.resume(null);
+
+    }
+
+    public void onClickPause(View v){
+        Log.d(TAG, "PRESSED PAUSE");
+        mPlayer.pause(this);
+    }
+
+    public void onClickPrevious(View v){
+        Log.d(TAG, "PRESSED PREVIOUS");
+        mPlayer.skipToPrevious(null);
+    }
+
+    public void onClickNext(View v){
+        Log.d(TAG, "PRESSED NEXT");
+        mPlayer.skipToNext(null);
+    }
+
+    @Override
+    public void onError(Error error){
+
+    }
+
+    @Override
+    public void onSuccess(){
+
+    }
+
 }

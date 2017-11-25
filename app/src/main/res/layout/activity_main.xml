@@ -1,18 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lv.edi.fitsound.MainActivity">
+    tools:context="lv.edi.fitsound.MainActivity"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Song Title"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+        <TextView
+            android:text="Test"
+            android:id="@+id/track_label"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_width="0dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Artist"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+        <TextView
+            android:text="Artist Test"
+            android:id="@+id/artist_label"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_width="0dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <TextView
+            android:text="Album"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+        <TextView
+            android:text="Album Test"
+            android:id="@+id/album_label"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_width="0dp"/>
+    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_weight="1"
+        android:id="@+id/album_art"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="&gt;"
+            android:onClick="onClickPlay"/>
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="||"
+            android:onClick="onClickPause"/>
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="&lt;&lt;"
+            android:onClick="onClickPrevious"/>
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="&gt;&gt;"
+            android:onClick="onClickNext"/>
+    </LinearLayout>
+
+</LinearLayout>
