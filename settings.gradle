@@ -1,1 +1,2 @@
+include ':app', ':mdslib-1.6.0(1)-release'
 include ':app', ':app\\libs\\spotify-web-api-android\\spotify-api\\build\\outputs\\aar'
