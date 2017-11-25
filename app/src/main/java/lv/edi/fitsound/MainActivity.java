@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,15 +37,20 @@ public class MainActivity extends Activity implements
 
     private static final int REQUEST_CODE = 1337;
 
+    private int current_SPM = 0;
+
+    private String playlist_70_90 = 
+
     TextView songTitleLable;
     TextView songAlbumLable;
     TextView songArtistLable;
     ImageView albumArt;
+    EditText testBPM;
 
     Vector<String> songTitles = new Vector();
 
 
-    @Override
+    @Override           // Pārveido orģinālās klases funkcijas.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -59,9 +65,13 @@ public class MainActivity extends Activity implements
         songArtistLable = (TextView)findViewById(R.id.artist_label);
         songAlbumLable = (TextView)findViewById(R.id.album_label);
         albumArt = (ImageView)findViewById(R.id.album_art);
+
+        testBPM = (EditText) findViewById(R.id.spm_input);
+
     }
 
     @Override
+    // Atgriešanās no citas aktivitātes
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
@@ -94,6 +104,7 @@ public class MainActivity extends Activity implements
     }
 
     @Override
+    // Izsauc Spotify API
     public void onPlaybackEvent(PlayerEvent playerEvent) {
         Log.d("MainActivity", "Playback event received: " + playerEvent.name());
         switch (playerEvent) {
@@ -175,6 +186,13 @@ public class MainActivity extends Activity implements
     public void onClickNext(View v){
         Log.d(TAG, "PRESSED NEXT");
         mPlayer.skipToNext(null);
+    }
+
+    public void setSPM(View v){
+        Log.d("MyTag","Hello");
+        String valueStr = testBPM.getText().toString();
+        current_SPM = Integer.parseInt(valueStr);
+        Log.d(TAG, String.format("Steps per minute set to %d !", current_SPM));
     }
 
     @Override

@@ -81,6 +81,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Set"
+            android:onClick="setSPM"
+            android:background="#778899">
+        </Button>
+        <EditText
+            android:id="@+id/spm_input"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:inputType="numberDecimal"
+            android:textColor="#FFFFFF"
+            android:hint="Type steps per minute"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
         <Button

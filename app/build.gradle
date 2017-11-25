@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "lv.edi.fitsound"
         minSdkVersion 15
@@ -23,10 +23,14 @@ repositories {
     mavenCentral()
     flatDir {
         dirs 'libs'
+        maven { url "https://jitpack.io" }
     }
 }
 
 dependencies {
+    // This library handles Spotify web api
+    compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -41,4 +45,6 @@ dependencies {
     compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+
 }
