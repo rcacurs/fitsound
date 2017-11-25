@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "lv.edi.fitsound"
         minSdkVersion 18
@@ -25,11 +25,16 @@ repositories {
     }
     flatDir {
         dirs 'libs'
+        maven { url "https://jitpack.io" }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    // This library handles Spotify web api
+    compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -45,4 +50,6 @@ dependencies {
     compile 'com.jjoe64:graphview:4.2.1'
     // GSON
     compile 'com.google.code.gson:gson:2.8.0'
+
+
 }
