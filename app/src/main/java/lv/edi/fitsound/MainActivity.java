@@ -22,6 +22,8 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.spotify.sdk.android.player.Metadata;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class MainActivity extends Activity implements
@@ -39,7 +41,7 @@ public class MainActivity extends Activity implements
 
     private int current_SPM = 0;
 
-    private String playlist_70_90 = 
+    private List bpmPlaylistsURI = new ArrayList();
 
     TextView songTitleLable;
     TextView songAlbumLable;
@@ -67,6 +69,10 @@ public class MainActivity extends Activity implements
         albumArt = (ImageView)findViewById(R.id.album_art);
 
         testBPM = (EditText) findViewById(R.id.spm_input);
+
+        bpmPlaylistsURI.add("spotify:user:11127592734:playlist:29Iv9A4NFPjpKomT5TggMy");
+        bpmPlaylistsURI.add("spotify:user:11127592734:playlist:366I8N1GYX5gkc9N0p1oLY");
+        bpmPlaylistsURI.add("spotify:user:11127592734:playlist:5kT3vPLgp7orzdQdJAX93w");
 
     }
 
@@ -189,9 +195,17 @@ public class MainActivity extends Activity implements
     }
 
     public void setSPM(View v){
-        Log.d("MyTag","Hello");
+        int playlistID = 0;
         String valueStr = testBPM.getText().toString();
         current_SPM = Integer.parseInt(valueStr);
+        playlistID = (current_SPM-70)/20;
+        if(playlistID<0){
+            playlistID = 0;
+        }
+        else if (playlistID>2){
+            playlistID = 2;
+        }
+        mPlayer.playUri(null, (String) bpmPlaylistsURI.get(playlistID), 0, 0);
         Log.d(TAG, String.format("Steps per minute set to %d !", current_SPM));
     }
 
