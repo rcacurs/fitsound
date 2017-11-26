@@ -32,6 +32,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 
@@ -48,7 +50,8 @@ public class MainActivity extends Activity implements
     long previousTimetamp = 0;
     long currentTimestamp = 0;
     // Sensor subscription
-    static private String URI_SERVICE = "/Sample/JumpCounter/JumpCount";//"/Sample/EdiJunction";//"/Meas/Acc/26";//"/Meas/IMU/13";//"/Meas/Acc/13";
+//    static private String URI_SERVICE = "/Sample/JumpCounter/JumpCount";//"/Sample/EdiJunction";//"/Meas/Acc/26";//"/Meas/IMU/13";//"/Meas/Acc/13";
+    static private String URI_SERVICE = "/Sample/EdiJunction";
     static private String URI_SERVICE2 = "/Meas/IMU6/26";
     String connectedSensorSerial;
     // TODO: Replace with your redirect URI
@@ -77,9 +80,21 @@ public class MainActivity extends Activity implements
 
     Vector<String> songTitles = new Vector();
 
+    double bpmCurrent = 0;
+    TimerTask task = new TimerTask(){
+
+        public void run(){
+            bpmCurrent = 0;
+            Log.d(TAG, "BPM 0");
+        }
+    };
+
+    Timer timer;
 
     @Override           // Pārveido orģinālās klases funkcijas.
     protected void onCreate(Bundle savedInstanceState) {
+        timer = new Timer();
+        timer.schedule(task, 2000);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -312,12 +327,15 @@ public class MainActivity extends Activity implements
                         Log.d(TAG, "RECEIVED SUBSCRIPTION: "+data);
 
                         if (bpmResponse != null ) {
-//
+                            timer.cancel();
+
                             Log.d(TAG, "RESPONSE TIMESTAMP "+bpmResponse.body.timestamp);
                             currentTimestamp = bpmResponse.body.timestamp;
                             double delta = (double)currentTimestamp - previousTimetamp;
                             previousTimetamp = currentTimestamp;
+                            bpmCurrent = 1/(delta/60000);
                             Log.d(TAG, "RESPONSE BPM "+ 1/(delta/60000));
+                            timer.schedule(task, 2000);
                         }
 //                        if (accResponse != null && accResponse.body.array.length > 0) {
 //

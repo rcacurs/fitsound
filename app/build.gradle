@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -20,9 +21,6 @@ android {
 
 repositories {
     mavenCentral()
-    maven{
-        url "https://repository-achartengine.forge.cloudbees.com/snapshot/"
-    }
     flatDir {
         dirs 'libs'
         maven { url "https://jitpack.io" }
@@ -33,10 +31,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     // This library handles authentication and authorization
     compile 'com.spotify.android:auth:1.0.0-alpha'
@@ -45,7 +43,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.polidea.rxandroidble:rxandroidble:1.4.3'
     compile project(':mdslib-1.6.0(1)-release')
-    compile 'com.jjoe64:graphview:4.2.1'
     // GSON
     compile 'com.google.code.gson:gson:2.8.0'
 
